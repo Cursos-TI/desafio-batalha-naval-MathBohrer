@@ -3,16 +3,6 @@
 // Siga os comentários para implementar cada parte do desafio.
 
 
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
-
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
-
     // Nível Mestre - Habilidades Especiais com Matrizes
     // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
     // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
@@ -36,14 +26,13 @@
 
     #include <stdio.h>
 
-    // Desafio Batalha Naval - Nível Novato
-    // Este código posiciona dois navios em um tabuleiro 10x10, utilizando vetores e matriz.
+    // Desafio Batalha Naval - Nível Aventureiro
     
     int main() {
         // Declarando o tabuleiro 10x10 e inicializando todas as posições com 0 (água)
         int tabuleiro[10][10];
     
-        // Inicializa todo o tabuleiro com 0
+        // Inicializa o tabuleiro com água (0)
         for (int linha = 0; linha < 10; linha++) {
             for (int coluna = 0; coluna < 10; coluna++) {
                 tabuleiro[linha][coluna] = 0;
@@ -51,30 +40,55 @@
         }
     
         // Definindo os navios (tamanho 3) usando vetores
-        int navioHorizontal[3] = {3, 3, 3}; // Representa um navio horizontal
-        int navioVertical[3] = {3, 3, 3};   // Representa um navio vertical
+        int navioHorizontal[3] = {3, 3, 3};
+        int navioVertical[3] = {3, 3, 3};
+        int navioDiagonalPrincipal[3] = {3, 3, 3}; // Linha e coluna aumentam juntos
+        int navioDiagonalSecundaria[3] = {3, 3, 3}; // Linha aumenta, coluna diminui
     
         // Definindo as coordenadas iniciais dos navios
-        int linhaHorizontal = 2;
-        int colunaHorizontal = 1;
+        int linhaHorizontal = 0;
+        int colunaHorizontal = 2;
     
-        int linhaVertical = 5;
-        int colunaVertical = 7;
+        int linhaVertical = 4;
+        int colunaVertical = 6;
     
-        // Posicionando o navio horizontal no tabuleiro
-        // O navio será colocado da esquerda para a direita
+        int linhaDiagonalPrincipal = 6;
+        int colunaDiagonalPrincipal = 0;
+    
+        int linhaDiagonalSecundaria = 2;
+        int colunaDiagonalSecundaria = 8;
+    
+        // Posicionando o navio horizontal
         for (int i = 0; i < 3; i++) {
-            tabuleiro[linhaHorizontal][colunaHorizontal + i] = navioHorizontal[i];
+            // Verifica se a posição está livre antes de posicionar
+            if (tabuleiro[linhaHorizontal][colunaHorizontal + i] == 0) {
+                tabuleiro[linhaHorizontal][colunaHorizontal + i] = navioHorizontal[i];
+            }
         }
     
-        // Posicionando o navio vertical no tabuleiro
-        // O navio será colocado de cima para baixo
+        // Posicionando o navio vertical
         for (int i = 0; i < 3; i++) {
-            tabuleiro[linhaVertical + i][colunaVertical] = navioVertical[i];
+            if (tabuleiro[linhaVertical + i][colunaVertical] == 0) {
+                tabuleiro[linhaVertical + i][colunaVertical] = navioVertical[i];
+            }
         }
     
-        // Exibindo o tabuleiro no console
-        printf("Tabuleiro de Batalha Naval:\n\n");
+        // Posicionando o navio na diagonal principal 
+        for (int i = 0; i < 3; i++) {
+            if (tabuleiro[linhaDiagonalPrincipal + i][colunaDiagonalPrincipal + i] == 0) {
+                tabuleiro[linhaDiagonalPrincipal + i][colunaDiagonalPrincipal + i] = navioDiagonalPrincipal[i];
+            }
+        }
+    
+        // Posicionando o navio na diagonal secundária
+        for (int i = 0; i < 3; i++) {
+            if (tabuleiro[linhaDiagonalSecundaria + i][colunaDiagonalSecundaria - i] == 0) {
+                tabuleiro[linhaDiagonalSecundaria + i][colunaDiagonalSecundaria - i] = navioDiagonalSecundaria[i];
+            }
+        }
+    
+        // Exibindo o tabuleiro 
+        printf("Tabuleiro de Batalha Naval - Nível Aventureiro:\n\n");
         for (int linha = 0; linha < 10; linha++) {
             for (int coluna = 0; coluna < 10; coluna++) {
                 printf("%d ", tabuleiro[linha][coluna]);
@@ -83,4 +97,4 @@
         }
     
         return 0;
-    }    
+    }
