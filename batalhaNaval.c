@@ -1,100 +1,113 @@
-// Desafio Batalha Naval
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
-
-
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
-
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
-
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
-
+// Desafio Batalha Naval - nível mestre
+ 
     #include <stdio.h>
 
-    // Desafio Batalha Naval - Nível Aventureiro
+    // Implementação das habilidades especiais (cone, cruz e octaedro)
     
     int main() {
-        // Declarando o tabuleiro 10x10 e inicializando todas as posições com 0 (água)
-        int tabuleiro[10][10];
+        // Definição do tabuleiro 10x10
+        int tabuleiro[10][10] = {0};
     
-        // Inicializa o tabuleiro com água (0)
-        for (int linha = 0; linha < 10; linha++) {
-            for (int coluna = 0; coluna < 10; coluna++) {
-                tabuleiro[linha][coluna] = 0;
+        // Definição dos navios 
+        tabuleiro[2][2] = 3;
+        tabuleiro[2][3] = 3;
+        tabuleiro[2][4] = 3;
+        tabuleiro[5][5] = 3;
+        tabuleiro[6][5] = 3;
+        tabuleiro[7][5] = 3;
+        tabuleiro[8][2] = 3;
+        tabuleiro[7][3] = 3;
+        tabuleiro[6][4] = 3;
+        tabuleiro[0][7] = 3;
+        tabuleiro[1][6] = 3;
+        tabuleiro[2][5] = 3;
+    
+        // Matrizes das habilidade 5x5
+        int cone[5][5] = {0};
+        int cruz[5][5] = {0};
+        int octaedro[5][5] = {0};
+    
+        // Preenchendo o Cone
+        for (int i = 0; i < 5; i++) { // linhas
+            for (int j = 0; j < 5; j++) { // colunas
+                if (j >= 2 - i && j <= 2 + i) {
+                    cone[i][j] = 1;
+                }
             }
         }
     
-        // Definindo os navios (tamanho 3) usando vetores
-        int navioHorizontal[3] = {3, 3, 3};
-        int navioVertical[3] = {3, 3, 3};
-        int navioDiagonalPrincipal[3] = {3, 3, 3}; // Linha e coluna aumentam juntos
-        int navioDiagonalSecundaria[3] = {3, 3, 3}; // Linha aumenta, coluna diminui
-    
-        // Definindo as coordenadas iniciais dos navios
-        int linhaHorizontal = 0;
-        int colunaHorizontal = 2;
-    
-        int linhaVertical = 4;
-        int colunaVertical = 6;
-    
-        int linhaDiagonalPrincipal = 6;
-        int colunaDiagonalPrincipal = 0;
-    
-        int linhaDiagonalSecundaria = 2;
-        int colunaDiagonalSecundaria = 8;
-    
-        // Posicionando o navio horizontal
-        for (int i = 0; i < 3; i++) {
-            // Verifica se a posição está livre antes de posicionar
-            if (tabuleiro[linhaHorizontal][colunaHorizontal + i] == 0) {
-                tabuleiro[linhaHorizontal][colunaHorizontal + i] = navioHorizontal[i];
+        // Preenchendo a Cruz
+        for (int i = 0; i < 5; i++) { // linhas
+            for (int j = 0; j < 5; j++) { // colunas
+                if (i == 2 || j == 2) {
+                    cruz[i][j] = 1;
+                }
             }
         }
     
-        // Posicionando o navio vertical
-        for (int i = 0; i < 3; i++) {
-            if (tabuleiro[linhaVertical + i][colunaVertical] == 0) {
-                tabuleiro[linhaVertical + i][colunaVertical] = navioVertical[i];
+        // Preenchendo o Octaedro
+        for (int i = 0; i < 5; i++) { // linhas
+            for (int j = 0; j < 5; j++) { // colunas
+                int di = (i > 2) ? (i - 2) : (2 - i); // distância vertical ao centro
+                int dj = (j > 2) ? (j - 2) : (2 - j); // distância horizontal ao centro
+                if (di + dj <= 2) {
+                    octaedro[i][j] = 1;
+                }
             }
         }
     
-        // Posicionando o navio na diagonal principal 
-        for (int i = 0; i < 3; i++) {
-            if (tabuleiro[linhaDiagonalPrincipal + i][colunaDiagonalPrincipal + i] == 0) {
-                tabuleiro[linhaDiagonalPrincipal + i][colunaDiagonalPrincipal + i] = navioDiagonalPrincipal[i];
+        // Definição das posições de origem para as habilidades
+        int origem_cone_linha = 0, origem_cone_coluna = 0;
+        int origem_cruz_linha = 5, origem_cruz_coluna = 5;
+        int origem_octaedro_linha = 7, origem_octaedro_coluna = 2;
+    
+        // Aplicando o Cone
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                int linha = origem_cone_linha + i;
+                int coluna = origem_cone_coluna + j;
+                if (linha >= 0 && linha < 10 && coluna >= 0 && coluna < 10) {
+                    if (cone[i][j] == 1 && tabuleiro[linha][coluna] == 0) {
+                        tabuleiro[linha][coluna] = 5;
+                    }
+                }
             }
         }
     
-        // Posicionando o navio na diagonal secundária
-        for (int i = 0; i < 3; i++) {
-            if (tabuleiro[linhaDiagonalSecundaria + i][colunaDiagonalSecundaria - i] == 0) {
-                tabuleiro[linhaDiagonalSecundaria + i][colunaDiagonalSecundaria - i] = navioDiagonalSecundaria[i];
+        // Aplicando a Cruz
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                int linha = origem_cruz_linha - 2 + i;
+                int coluna = origem_cruz_coluna - 2 + j;
+                if (linha >= 0 && linha < 10 && coluna >= 0 && coluna < 10) {
+                    if (cruz[i][j] == 1 && tabuleiro[linha][coluna] == 0) {
+                        tabuleiro[linha][coluna] = 5;
+                    }
+                }
             }
         }
     
-        // Exibindo o tabuleiro 
-        printf("Tabuleiro de Batalha Naval - Nível Aventureiro:\n\n");
-        for (int linha = 0; linha < 10; linha++) {
-            for (int coluna = 0; coluna < 10; coluna++) {
-                printf("%d ", tabuleiro[linha][coluna]);
+        // Aplicando o Octaedro
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                int linha = origem_octaedro_linha - 2 + i;
+                int coluna = origem_octaedro_coluna - 2 + j;
+                if (linha >= 0 && linha < 10 && coluna >= 0 && coluna < 10) {
+                    if (octaedro[i][j] == 1 && tabuleiro[linha][coluna] == 0) {
+                        tabuleiro[linha][coluna] = 5;
+                    }
+                }
             }
-            printf("\n"); // Nova linha após cada linha do tabuleiro
+        }
+    
+        // Exibição do resultado
+        printf("Batalha Naval:\n");
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                printf("%d ", tabuleiro[i][j]);
+            }
+            printf("\n");
         }
     
         return 0;
-    }
+    }    
